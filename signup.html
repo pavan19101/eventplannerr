@@ -78,22 +78,13 @@
           document.getElementById('signup-message').textContent = 'Enter a valid 10-digit phone number.';
           return;
         }
-        fetch('http://localhost:3000/send-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            document.getElementById('signup-message').textContent = 'OTP sent to your phone.';
-            document.getElementById('otp-section').style.display = 'block';
-            document.getElementById('signup-btn').disabled = false;
-            otpSent = true;
-          } else {
-            document.getElementById('signup-message').textContent = 'Failed to send OTP.';
-          }
-        });
+        // DEMO OTP: Generate and show OTP on screen instead of sending via backend
+        const demoOTP = Math.floor(100000 + Math.random() * 900000).toString();
+        window.demoOTP = demoOTP; // Store globally for verification
+        document.getElementById('signup-message').textContent = 'Demo OTP: ' + demoOTP + ' (enter this to sign up)';
+        document.getElementById('otp-section').style.display = 'block';
+        document.getElementById('signup-btn').disabled = false;
+        otpSent = true;
       });
       document.getElementById('signupForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -114,25 +105,18 @@
           document.getElementById('signup-message').textContent = 'Please request OTP first.';
           return;
         }
-        fetch('http://localhost:3000/verify-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, otp })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            localStorage.setItem('eventplanner_username', username);
-            localStorage.setItem('eventplanner_password', password);
-            localStorage.setItem('eventplanner_phone', phone);
-            document.getElementById('signup-message').textContent = 'Sign up successful! Redirecting to login...';
-            setTimeout(() => {
-              window.location.href = 'p2.html';
-            }, 1200);
-          } else {
-            document.getElementById('signup-message').textContent = 'Invalid OTP.';
-          }
-        });
+        // DEMO OTP: Check against generated demo OTP
+        if (otp !== window.demoOTP) {
+          document.getElementById('signup-message').textContent = 'Invalid OTP.';
+          return;
+        }
+        localStorage.setItem('eventplanner_username', username);
+        localStorage.setItem('eventplanner_password', password);
+        localStorage.setItem('eventplanner_phone', phone);
+        document.getElementById('signup-message').textContent = 'Sign up successful! Redirecting to login...';
+        setTimeout(() => {
+          window.location.href = 'p2.html';
+        }, 1200);
       });
     </script>
   </body>
