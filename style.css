@@ -3,8 +3,11 @@
     margin-right: 20px;
 }
 .chinni{
-    height: 100vh;
+   height: 100vh;
     background-image: url(https://wallpapercave.com/wp/wp2599345.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 .nn{
     font-family: 'Courier New', Courier, monospace;
