@@ -18,7 +18,7 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav ">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup ">
         <ul class="navbar-nav ">
           <li class="nav-item">
             <a class="nav-link nn" href="#">Home</a>
@@ -30,7 +30,7 @@
             <a class="nav-link nn" href="#">Pricing</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link nn" href="#">Disabled</a>
+            <a class="nav-link nn" href="signup.html" style="color: blue;">sing up</a>
           </li> 
         </ul>
       </div>
@@ -39,7 +39,7 @@
     </div>
     <div class="l1">
         <div class="pp"><h1 style="color: blue;">login</h1>
-        <form action="p2.html" method="get">
+        <form id="loginForm">
             <div class="l2">
                 <label for="username" style="color: aliceblue;">username</label>
                 <input type="text" id="username" name="username" required>
@@ -51,12 +51,31 @@
         <div class="l3">
         <button type="submit"> login</button>
         </div>
-        
+        <div id="login-message" style="color: yellow; margin-top: 10px;"></div>
            </form>
         </div>
      </div>
    </div>
-   
-  
-  </body>
+   <div class="d-flex margin-top left my-4">
+     <a href="nextpage.html" class="btn btn-primary btn-lg">Next Page</a>
+   </div>
+  <div class="hello"> welcome</div>
+  <script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const storedUsername = localStorage.getItem('eventplanner_username');
+    const storedPassword = localStorage.getItem('eventplanner_password');
+    if (username === storedUsername && password === storedPassword) {
+        document.getElementById('login-message').textContent = 'Login successful! Redirecting...';
+        setTimeout(() => {
+            window.location.href = 'p2.html'; // Redirect to the next page
+        }, 1000);
+    } else {
+        document.getElementById('login-message').textContent = 'Invalid username or password.';
+    }
+});
+</script>
+</body>
 </html>
