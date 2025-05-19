@@ -41,18 +41,21 @@
         <div class="pp"><h1 style="color: blue;">login</h1>
         <form id="loginForm">
             <div class="l2">
-                <label for="username" style="color: aliceblue;">username</label>
+                <label for="username" style="color: aliceblue;">Username</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="l2">
-                <label for="password" style="color: aliceblue;">password</label>
+                <label for="password" style="color: aliceblue;">Password</label>
                 <input type="password" id="password" name="password" required>
-                </div>         
-        <div class="l3">
-        <button type="submit"> login</button>
+            </div>
+            <div class="l3">
+                <button type="submit">Login</button>
+            </div>
+            <div id="login-message" style="color: yellow; margin-top: 10px;"></div>
+        </form>
+        <div style="margin-top: 10px;">
+            <a href="signup.html" style="color: #fff;">Don't have an account? Sign Up</a>
         </div>
-        <div id="login-message" style="color: yellow; margin-top: 10px;"></div>
-           </form>
         </div>
      </div>
    </div>
@@ -70,7 +73,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     if (username === storedUsername && password === storedPassword) {
         document.getElementById('login-message').textContent = 'Login successful! Redirecting...';
         setTimeout(() => {
-            window.location.href = 'p2.html'; // Redirect to the next page
+            window.location.href = 'nextpage.html'; // Redirect to the next page after login
         }, 1000);
     } else {
         document.getElementById('login-message').textContent = 'Invalid username or password.';
