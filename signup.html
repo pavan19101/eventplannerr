@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1a2233;
+      }
+      .signup-card {
+        background: #222b3a;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        padding: 2.5rem 2rem;
+        max-width: 400px;
+        width: 100%;
+      }
+      .signup-card label {
+        color: #fff;
+      }
+      .signup-card input {
+        margin-bottom: 1rem;
+      }
+      #signup-message {
+        min-height: 1.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signup-card mx-auto">
+      <h2 class="text-center mb-4" style="color: #4ea1f7;">Sign Up</h2>
+      <form id="signupForm" autocomplete="off">
+        <div class="row g-2">
+          <div class="col-12">
+            <label for="signup-username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="signup-username" name="username" required>
+          </div>
+          <div class="col-12">
+            <label for="signup-phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="signup-phone" name="phone" pattern="[0-9]{10}" maxlength="10" required>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="signup-password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signup-password" name="password" required>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="signup-confirm-password" name="confirm-password" required>
+          </div>
+          <div class="col-8">
+            <button type="button" id="send-otp" class="btn btn-secondary w-100">Send OTP</button>
+          </div>
+          <div class="col-4" id="otp-section" style="display:none;">
+            <input type="text" class="form-control" id="signup-otp" name="otp" maxlength="6" placeholder="Enter OTP">
+          </div>
+          <div class="col-12">
+            <button type="submit" id="signup-btn" class="btn btn-primary w-100" disabled>Sign Up</button>
+          </div>
+        </div>
+        <div id="signup-message" class="text-center mt-2" style="color: yellow;"></div>
+      </form>
+      <div class="text-center mt-3">
+        <a href="p2.html" style="color: #fff;">Already have an account? Login</a>
+      </div>
+    </div>
+    <script>
+      let otpSent = false;
+      document.getElementById('send-otp').addEventListener('click', function() {
+        const phone = document.getElementById('signup-phone').value.trim();
+        if (!/^\d{10}$/.test(phone)) {
+          document.getElementById('signup-message').textContent = 'Enter a valid 10-digit phone number.';
+          return;
+        }
+        fetch('http://localhost:3000/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById('signup-message').textContent = 'OTP sent to your phone.';
+            document.getElementById('otp-section').style.display = 'block';
+            document.getElementById('signup-btn').disabled = false;
+            otpSent = true;
+          } else {
+            document.getElementById('signup-message').textContent = 'Failed to send OTP.';
+          }
+        });
+      });
+      document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('signup-username').value.trim();
+        const phone = document.getElementById('signup-phone').value.trim();
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+        const otp = document.getElementById('signup-otp').value.trim();
+        if (!username || !phone || !password || !confirmPassword || !otp) {
+          document.getElementById('signup-message').textContent = 'Please fill all fields and enter OTP.';
+          return;
+        }
+        if (password !== confirmPassword) {
+          document.getElementById('signup-message').textContent = 'Passwords do not match.';
+          return;
+        }
+        if (!otpSent) {
+          document.getElementById('signup-message').textContent = 'Please request OTP first.';
+          return;
+        }
+        fetch('http://localhost:3000/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, otp })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            localStorage.setItem('eventplanner_username', username);
+            localStorage.setItem('eventplanner_password', password);
+            localStorage.setItem('eventplanner_phone', phone);
+            document.getElementById('signup-message').textContent = 'Sign up successful! Redirecting to login...';
+            setTimeout(() => {
+              window.location.href = 'p2.html';
+            }, 1200);
+          } else {
+            document.getElementById('signup-message').textContent = 'Invalid OTP.';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
