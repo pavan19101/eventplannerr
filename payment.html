@@ -24,9 +24,13 @@
             <div class="booked-details mb-4">
                 <h4>Booked Item</h4>
                 <ul>
-                    <li><strong>Name:</strong> Golden View</li>
+                    <li><strong>Name:</strong> <span id="productName">Golden View</span></li>
+                    <li><strong>Price:</strong> <span id="productPrice">9999 ₹</span></li>
                     <li><strong>Date:</strong> 25 May 2025</li>
-                    <li><strong>Booked By:</strong> Lakshmi</li>
+                    <li><strong>Booked By:</strong> <span id="customerName"></span></li>
+                    <li><strong>Phone:</strong> <span id="customerPhone"></span></li>
+                    <li><strong>Email:</strong> <span id="customerEmail"></span></li>
+                    <li><strong>Address:</strong> <span id="customerAddress"></span></li>
                     <li><strong>Guests:</strong> 150</li>
                 </ul>
             </div>
@@ -52,8 +56,21 @@
         <div id="confirmation-section" style="display:none;">
             <h1 class="text-success text-center mt-4">Payment Done!</h1>
             <p class="text-center">Thank you for your payment. Your order has been booked successfully.</p>
-            <a href="index.html" class="btn btn-primary d-block mx-auto" style="width:200px;">Back to Home</a>
+            <a href="p2.html" class="btn btn-primary d-block mx-auto" style="width:200px;">Back to Home</a>
         </div>
     </div>
+    <script>
+        window.onload = function() {
+            // Fill in customer details from localStorage
+            document.getElementById('customerName').textContent = localStorage.getItem('customer_name') || 'N/A';
+            document.getElementById('customerPhone').textContent = localStorage.getItem('customer_phone') || 'N/A';
+            document.getElementById('customerEmail').textContent = localStorage.getItem('customer_email') || 'N/A';
+            document.getElementById('customerAddress').textContent = localStorage.getItem('customer_address') || 'N/A';
+            // Optionally, fill in product name/price if stored
+            if(localStorage.getItem('selected_product_name')) {
+                document.getElementById('productName').textContent = localStorage.getItem('selected_product_name');
+            }
+        }
+    </script>
 </body>
 </html>
