@@ -80,7 +80,72 @@
     <!-- ...rest of your code... -->
     </div>
     </div>
+    <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerModalLabel">Enter Customer Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="customerForm">
+          <div class="mb-3">
+            <label for="customerName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="customerName" required>
+          </div>
+          <div class="mb-3">
+            <label for="customerPhone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="customerPhone" pattern="[0-9]{10}" maxlength="10" required>
+          </div>
+          <div class="mb-3">
+            <label for="customerEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="customerEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="customerAddress" class="form-label">Address</label>
+            <input type="text" class="form-control" id="customerAddress" required>
+          </div>
+          <div id="customer-message" class="text-center mb-2" style="color: #eab308;"></div>
+          <button type="submit" class="btn btn-primary w-100">Submit Details & Continue to Payment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
+<script>
+// Attach event listeners to all Buy buttons to show the modal
+Array.from(document.querySelectorAll('.btn-danger')).forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var modal = new bootstrap.Modal(document.getElementById('customerModal'));
+    modal.show();
+  });
+});
 
+document.getElementById('customerForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const email = document.getElementById('customerEmail').value.trim();
+  const address = document.getElementById('customerAddress').value.trim();
+  if (!name || !phone || !email || !address) {
+    document.getElementById('customer-message').textContent = 'Please fill all fields.';
+    return;
+  }
+  localStorage.setItem('customer_name', name);
+  localStorage.setItem('customer_phone', phone);
+  localStorage.setItem('customer_email', email);
+  localStorage.setItem('customer_address', address);
+  document.getElementById('customer-message').textContent = 'Thank you! Redirecting to payment...';
+  setTimeout(function() {
+    bootstrap.Modal.getInstance(document.getElementById('customerModal')).hide();
+    window.location.href = 'payment.html';
+  }, 1000);
+});
+</script>
   </body>
 </html>
+
+
+ 
