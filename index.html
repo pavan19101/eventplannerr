@@ -73,7 +73,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     if (username === storedUsername && password === storedPassword) {
         document.getElementById('login-message').textContent = 'Login successful! Redirecting...';
         setTimeout(() => {
-            window.location.href = 'nextpage.html'; // Redirect to the next page after login
+            window.location.href = 'p2.html'; // Redirect to the next page after login
         }, 1000);
     } else {
         document.getElementById('login-message').textContent = 'Invalid username or password.';
